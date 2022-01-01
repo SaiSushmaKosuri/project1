@@ -1,0 +1,97 @@
+from tkinter import *
+from PIL import Image,ImageTk
+from random import randint
+#main window
+root=Tk()
+root.title("rock paper scissors")
+root.configure(background = "purple")
+#picture
+rock_img = ImageTk.PhotoImage(Image.open("rock image.jpg"))
+paper_img = ImageTk.PhotoImage(Image.open("paper image.png"))
+scissors_img = ImageTk.PhotoImage(Image.open("scissors image.png"))
+rock_img_com = ImageTk.PhotoImage(Image.open("rock image com.jpg"))
+paper_img_com = ImageTk.PhotoImage(Image.open("paper image com.jpg"))
+scissors_img_com = ImageTk.PhotoImage(Image.open("scissors image com.jpg"))
+#picture insert
+user_label=Label(root,image=rock_img,bg="purple")
+com_label=Label(root,image=rock_img_com,bg="purple")
+com_label.grid(row=1,column=3)
+user_label.grid(row=1,column=15)
+#scores
+player_score=Label(root,text=0,font=100,bg="purple",fg="white")
+com_score=Label(root,text=0,font=100,bg="purple",fg="white")
+com_score.grid(row=1,column=3)
+player_score.grid(row=1,column=6)
+#indicator
+user_indicator=Label(root,font=50,text="USER",bg="purple",fg="pink").grid(row=0,column=6)
+com_indicator=Label(root,font=50,text="COMPUTER",bg="purple",fg="pink").grid(row=0,column=3)
+#message
+msg=Label(root,font=50,fg="yellow",bg="black")
+msg.grid(row=4,column=5)
+# update message
+def updatemessage(x):
+    msg['text'] = x
+# update user scores
+def updateuserscore():
+    score = int(player_score["text"])
+    score = score + 1
+    player_score["text"] = str(score)
+# update com scores
+def updatecom_score():
+    score = int(com_score["text"])
+    score = score + 1
+    com_score["text"] = str(score)
+#check winner
+def checkwin(player,computer):
+    if player==computer:
+         updatemessage("its a tie !!!")
+
+    elif player=="rock":
+        if computer=="paper":
+            updatemessage("you loose!!")
+            updatecom_score()
+        else:
+            updatemessage("you win!!")
+            updateuserscore()
+    elif player=="paper":
+        if computer=="scissors":
+            updatemessage("you loose!!")
+            updatecom_score()
+        else:
+            updatemessage("you win!!")
+            updateuserscore()
+    elif player=="scissors":
+        if computer=="rock":
+            updatemessage("you loose!!")
+            updatecom_score()
+        else:
+            updatemessage("you win!!")
+            updateuserscore()
+    else:
+        pass
+#update choices
+choices = ["rock", "paper", "scissors"]
+def updatechoice(x):
+    #for computer
+    comchoice=choices[randint(0,2)]
+    if comchoice=="rock":
+        com_label.configure(image=rock_img_com)
+    elif comchoice == "paper":
+            com_label.configure(image=paper_img_com)
+    else:
+        com_label.configure(image=scissors_img_com)
+    #for user
+    if x=="rock":
+        user_label.configure(image=rock_img)
+    elif x == "paper":
+            user_label.configure(image=paper_img)
+    else:
+        user_label.configure(image=scissors_img)
+    checkwin(x,comchoice)
+#buttons
+rock=Button(root,width=20,height=3,text="ROCK",bg="red",fg="white",command=lambda:updatechoice("rock")).grid(row=3,column=0)
+paper=Button(root,width=25,height=3,text="PAPER",bg="blue",fg="white",command=lambda:updatechoice("paper")).grid(row=3,column=5)
+scissors=Button(root,width=25,height=3,text="SCISSORS",bg="green",fg="white",command=lambda:updatechoice("scissors")).grid(row=3,column=15)
+
+
+root.mainloop()
